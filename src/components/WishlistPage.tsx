@@ -9,10 +9,11 @@ interface WishlistPageProps {
   wishlist: number[];
   onProductClick: (product: Product) => void;
   onToggleWishlist: (productId: number) => void;
+  onAddToCart: (product: Product, size: string) => void;
   onBack: () => void;
 }
 
-const WishlistPage = ({ products, wishlist, onProductClick, onToggleWishlist, onBack }: WishlistPageProps) => {
+const WishlistPage = ({ products, wishlist, onProductClick, onToggleWishlist, onAddToCart, onBack }: WishlistPageProps) => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -53,6 +54,7 @@ const WishlistPage = ({ products, wishlist, onProductClick, onToggleWishlist, on
             wishlist={wishlist}
             onProductClick={onProductClick}
             onToggleWishlist={onToggleWishlist}
+            onAddToCart={onAddToCart}
           />
         )}
       </div>

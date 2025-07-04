@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { ArrowLeft, Search as SearchIcon, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ interface SearchProps {
   onBack: () => void;
   onProductClick: (product: Product) => void;
   onToggleWishlist: (productId: number) => void;
+  onAddToCart: (product: Product, size: string) => void;
   onHomeClick: () => void;
   onCartClick: () => void;
   onContactClick: () => void;
@@ -106,6 +106,7 @@ const Search = ({
   onBack, 
   onProductClick, 
   onToggleWishlist,
+  onAddToCart,
   onHomeClick,
   onCartClick,
   onContactClick,
@@ -394,6 +395,7 @@ const Search = ({
             wishlist={wishlist}
             onProductClick={onProductClick}
             onToggleWishlist={onToggleWishlist}
+            onAddToCart={onAddToCart}
           />
         )}
       </div>

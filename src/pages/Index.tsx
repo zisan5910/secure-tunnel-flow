@@ -966,6 +966,7 @@ const Index = () => {
           onBack={() => setCurrentPage("home")}
           onProductClick={handleProductClick}
           onToggleWishlist={toggleWishlist}
+          onAddToCart={addToCart}
           onHomeClick={navigationHandlers.onHomeClick}
           onCartClick={navigationHandlers.onCartClick}
           onContactClick={navigationHandlers.onContactClick}
@@ -984,6 +985,7 @@ const Index = () => {
           wishlist={wishlist}
           onProductClick={handleProductClick}
           onToggleWishlist={toggleWishlist}
+          onAddToCart={addToCart}
           onBack={() => setIsWishlistOpen(false)}
         />
       </div>
@@ -1023,7 +1025,7 @@ const Index = () => {
       {/* Simple Category Navigation with better mobile scrolling */}
       <div className="px-4 py-4 bg-white border-b border-gray-100">
         <div className="w-full overflow-x-auto">
-          <div className="flex items-center gap-2 pb-2 min-w-max">
+          <div className="flex gap-2 pb-2 min-w-max">
             <Button
               variant="ghost"
               onClick={() => handleCategorySelect("All")}
@@ -1083,6 +1085,7 @@ const Index = () => {
             wishlist={wishlist}
             onProductClick={handleProductClick}
             onToggleWishlist={toggleWishlist}
+            onAddToCart={addToCart}
           />
         )}
       </section>
