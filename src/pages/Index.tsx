@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Heart, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import ProductGrid from "@/components/ProductGrid";
 import ProductDetailPage from "@/components/ProductDetailPage";
 import WishlistPage from "@/components/WishlistPage";
@@ -801,6 +802,13 @@ const Index = () => {
 
   const cartItemsCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  // Ensure product details page starts from the top
+  useEffect(() => {
+    if (currentPage === "product-detail" && selectedProduct) {
+      window.scrollTo(0, 0);
+    }
+  }, [currentPage, selectedProduct]);
+
   const navigationHandlers = useMemo(() => ({
     onHomeClick: () => {
       setCurrentPage("home");
@@ -1012,31 +1020,33 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Category Navigation */}
+      {/* Enhanced Category Navigation with ScrollArea */}
       <div className="px-4 py-4 bg-white border-b border-gray-100">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          <Button
-            variant="ghost"
-            onClick={() => handleCategorySelect("All")}
-            className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
-              selectedCategory === "All"
-                ? "bg-black text-white hover:bg-gray-800"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            All Products
-          </Button>
-          
-          {Object.entries(categoryData).map(([category, subcategories]) => (
-            <CategoryDropdown
-              key={category}
-              category={category}
-              subcategories={subcategories}
-              onCategorySelect={handleCategorySelect}
-              isSelected={selectedCategory === category}
-            />
-          ))}
-        </div>
+        <ScrollArea className="w-full">
+          <div className="flex items-center gap-2 pb-2 min-w-max">
+            <Button
+              variant="ghost"
+              onClick={() => handleCategorySelect("All")}
+              className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 ${
+                selectedCategory === "All"
+                  ? "bg-black text-white hover:bg-gray-800 shadow-md"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-black"
+              }`}
+            >
+              All Products
+            </Button>
+            
+            {Object.entries(categoryData).map(([category, subcategories]) => (
+              <CategoryDropdown
+                key={category}
+                category={category}
+                subcategories={subcategories}
+                onCategorySelect={handleCategorySelect}
+                isSelected={selectedCategory === category}
+              />
+            ))}
+          </div>
+        </ScrollArea>
       </div>
 
       {/* Products Section */}
