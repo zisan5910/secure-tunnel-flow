@@ -232,13 +232,13 @@ const Search = ({
             {/* Main Category Filter */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Category</label>
-              <ScrollArea className="w-full">
+              <div className="w-full overflow-x-auto">
                 <div className="flex gap-2 pb-2 min-w-max">
                   {allCategories.map((category) => (
                     <button
                       key={category}
                       onClick={() => handleCategorySelect(category)}
-                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 ${
                         selectedCategory === category
                           ? "bg-black text-white"
                           : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -248,18 +248,18 @@ const Search = ({
                     </button>
                   ))}
                 </div>
-              </ScrollArea>
+              </div>
             </div>
 
             {/* Subcategory Filter */}
             {currentSubcategories.length > 0 && (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">Subcategory</label>
-                <ScrollArea className="w-full">
+                <div className="w-full overflow-x-auto">
                   <div className="flex gap-2 pb-2 min-w-max">
                     <button
                       onClick={() => setSelectedSubcategory(null)}
-                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 ${
                         !selectedSubcategory
                           ? "bg-black text-white"
                           : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -271,7 +271,7 @@ const Search = ({
                       <button
                         key={subcategory}
                         onClick={() => setSelectedSubcategory(subcategory)}
-                        className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                        className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 ${
                           selectedSubcategory === subcategory
                             ? "bg-black text-white"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -281,52 +281,56 @@ const Search = ({
                       </button>
                     ))}
                   </div>
-                </ScrollArea>
+                </div>
               </div>
             )}
 
             {/* Price Range Filter */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Price Range</label>
-              <div className="flex flex-wrap gap-2">
-                {priceRanges.map((range) => (
-                  <button
-                    key={range.label}
-                    onClick={() => setSelectedPriceRange(range)}
-                    className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
-                      selectedPriceRange.label === range.label
-                        ? "bg-black text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {range.label}
-                  </button>
-                ))}
+              <div className="w-full overflow-x-auto">
+                <div className="flex gap-2 pb-2 min-w-max">
+                  {priceRanges.map((range) => (
+                    <button
+                      key={range.label}
+                      onClick={() => setSelectedPriceRange(range)}
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 ${
+                        selectedPriceRange.label === range.label
+                          ? "bg-black text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {range.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Sort By */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Sort By</label>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { value: "name", label: "Name" },
-                  { value: "price-low", label: "Price: Low to High" },
-                  { value: "price-high", label: "Price: High to Low" },
-                  { value: "rating", label: "Rating" }
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => setSortBy(option.value)}
-                    className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
-                      sortBy === option.value
-                        ? "bg-black text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+              <div className="w-full overflow-x-auto">
+                <div className="flex gap-2 pb-2 min-w-max">
+                  {[
+                    { value: "name", label: "Name" },
+                    { value: "price-low", label: "Price: Low to High" },
+                    { value: "price-high", label: "Price: High to Low" },
+                    { value: "rating", label: "Rating" }
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => setSortBy(option.value)}
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 ${
+                        sortBy === option.value
+                          ? "bg-black text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

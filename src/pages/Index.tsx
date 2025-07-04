@@ -1020,14 +1020,14 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Simple Category Navigation with ScrollArea */}
+      {/* Simple Category Navigation with better mobile scrolling */}
       <div className="px-4 py-4 bg-white border-b border-gray-100">
-        <ScrollArea className="w-full">
+        <div className="w-full overflow-x-auto">
           <div className="flex items-center gap-2 pb-2 min-w-max">
             <Button
               variant="ghost"
               onClick={() => handleCategorySelect("All")}
-              className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 ${
+              className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 flex-shrink-0 ${
                 selectedCategory === "All"
                   ? "bg-black text-white hover:bg-gray-800 shadow-md"
                   : "text-gray-700 hover:bg-gray-100 hover:text-black"
@@ -1041,7 +1041,7 @@ const Index = () => {
                 key={category}
                 variant="ghost"
                 onClick={() => handleCategorySelect(category)}
-                className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 ${
+                className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 flex-shrink-0 ${
                   selectedCategory === category
                     ? "bg-black text-white hover:bg-gray-800 shadow-md"
                     : "text-gray-700 hover:bg-gray-100 hover:text-black"
@@ -1051,7 +1051,7 @@ const Index = () => {
               </Button>
             ))}
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
       {/* Products Section */}
