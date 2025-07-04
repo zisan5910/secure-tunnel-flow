@@ -2,6 +2,7 @@
 import { useState, useMemo } from "react";
 import { ArrowLeft, Search as SearchIcon, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import ProductGrid from "@/components/ProductGrid";
 import ProductModal from "@/components/ProductModal";
 import BottomNav from "@/components/BottomNav";
@@ -19,19 +20,76 @@ interface SearchProps {
   cartCount: number;
 }
 
-const categories = [
-  "All", 
-  "Electronics", 
-  "Fashion", 
-  "Home & Living", 
-  "Beauty & Personal Care", 
-  "Grocery & Food",
-  "Books & Stationery",
-  "Toys & Baby Products", 
-  "Sports & Outdoors", 
-  "Automotive", 
-  "Health & Wellness"
-];
+const categoryData = {
+  Electronics: [
+    "Mobile Phones",
+    "Laptops & Computers", 
+    "Cameras",
+    "Accessories (Chargers, Earphones, etc.)"
+  ],
+  Fashion: [
+    "Men's Clothing",
+    "Women's Clothing",
+    "Kid's Clothing", 
+    "Footwear",
+    "Watches, Bags, Jewelry"
+  ],
+  "Home & Living": [
+    "Furniture",
+    "Kitchen & Dining",
+    "Home Decor",
+    "Bedding",
+    "Cleaning Supplies"
+  ],
+  "Beauty & Personal Care": [
+    "Skincare",
+    "Makeup", 
+    "Hair Care",
+    "Fragrances",
+    "Men's Grooming"
+  ],
+  "Grocery & Food": [
+    "Fruits & Vegetables",
+    "Beverages",
+    "Snacks",
+    "Rice, Oils, Spices",
+    "Frozen Food"
+  ],
+  "Books & Stationery": [
+    "Academic Books",
+    "Novels",
+    "Office Supplies", 
+    "Art & Craft Materials"
+  ],
+  "Toys & Baby Products": [
+    "Toys by Age",
+    "Baby Clothing",
+    "Diapers & Wipes",
+    "Baby Food"
+  ],
+  "Sports & Outdoors": [
+    "Exercise Equipment",
+    "Sportswear",
+    "Outdoor Gear",
+    "Cycling, Football, Cricket items"
+  ],
+  Automotive: [
+    "Car Accessories",
+    "Motorbike Gear",
+    "Oils & Fluids",
+    "Car Tools"
+  ],
+  "Health & Wellness": [
+    "Vitamins & Supplements",
+    "Medical Equipment",
+    "First Aid",
+    "Eye & Dental Care"
+  ]
+};
+
+// Flatten all categories for search
+const allCategories = ["All", ...Object.keys(categoryData)];
+const allSubcategories = Object.values(categoryData).flat();
 
 const priceRanges = [
   { label: "All Prices", min: 0, max: Infinity },
@@ -55,6 +113,7 @@ const Search = ({
 }: SearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(priceRanges[0]);
   const [sortBy, setSortBy] = useState("name");
   const [showFilters, setShowFilters] = useState(false);
@@ -68,9 +127,10 @@ const Search = ({
                            (product.brand && product.brand.toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+      const matchesSubcategory = !selectedSubcategory || product.subcategory === selectedSubcategory;
       const matchesPrice = product.price >= selectedPriceRange.min && product.price <= selectedPriceRange.max;
       
-      return matchesSearch && matchesCategory && matchesPrice;
+      return matchesSearch && matchesCategory && matchesSubcategory && matchesPrice;
     });
 
     // Sort products
@@ -89,14 +149,22 @@ const Search = ({
     });
 
     return filtered;
-  }, [products, searchQuery, selectedCategory, selectedPriceRange, sortBy]);
+  }, [products, searchQuery, selectedCategory, selectedSubcategory, selectedPriceRange, sortBy]);
 
   const clearAllFilters = () => {
     setSearchQuery("");
     setSelectedCategory("All");
+    setSelectedSubcategory(null);
     setSelectedPriceRange(priceRanges[0]);
     setSortBy("name");
   };
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    setSelectedSubcategory(null); // Reset subcategory when main category changes
+  };
+
+  const currentSubcategories = selectedCategory !== "All" ? categoryData[selectedCategory as keyof typeof categoryData] || [] : [];
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -161,25 +229,61 @@ const Search = ({
               </Button>
             </div>
 
-            {/* Category Filter */}
+            {/* Main Category Filter */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Category</label>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
-                      selectedCategory === category
-                        ? "bg-black text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
+              <ScrollArea className="w-full">
+                <div className="flex gap-2 pb-2 min-w-max">
+                  {allCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => handleCategorySelect(category)}
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                        selectedCategory === category
+                          ? "bg-black text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
+
+            {/* Subcategory Filter */}
+            {currentSubcategories.length > 0 && (
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Subcategory</label>
+                <ScrollArea className="w-full">
+                  <div className="flex gap-2 pb-2 min-w-max">
+                    <button
+                      onClick={() => setSelectedSubcategory(null)}
+                      className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                        !selectedSubcategory
+                          ? "bg-black text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      All {selectedCategory}
+                    </button>
+                    {currentSubcategories.map((subcategory) => (
+                      <button
+                        key={subcategory}
+                        onClick={() => setSelectedSubcategory(subcategory)}
+                        className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+                          selectedSubcategory === subcategory
+                            ? "bg-black text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        {subcategory}
+                      </button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            )}
 
             {/* Price Range Filter */}
             <div>
@@ -229,7 +333,7 @@ const Search = ({
         )}
 
         {/* Active Filters */}
-        {(searchQuery || selectedCategory !== "All" || selectedPriceRange.label !== "All Prices") && (
+        {(searchQuery || selectedCategory !== "All" || selectedSubcategory || selectedPriceRange.label !== "All Prices") && (
           <div className="flex flex-wrap gap-2 items-center">
             <span className="text-xs text-gray-500">Active filters:</span>
             {searchQuery && (
@@ -240,6 +344,11 @@ const Search = ({
             {selectedCategory !== "All" && (
               <span className="bg-black text-white px-2 py-1 rounded-full text-xs">
                 {selectedCategory}
+              </span>
+            )}
+            {selectedSubcategory && (
+              <span className="bg-black text-white px-2 py-1 rounded-full text-xs">
+                {selectedSubcategory}
               </span>
             )}
             {selectedPriceRange.label !== "All Prices" && (
