@@ -36,6 +36,40 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onA
                 <span className="text-white text-xs font-medium">Out of Stock</span>
               </div>
             )}
+            
+            {/* Action Icons - Positioned over the image */}
+            <div className="absolute bottom-2 right-2 flex gap-1.5">
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!product.inStock}
+                className="h-7 w-7 bg-white/90 hover:bg-white shadow-sm backdrop-blur-sm rounded-full border border-gray-200"
+                onClick={(e) => handleAddToCart(e, product)}
+              >
+                <ShoppingBag className="h-3.5 w-3.5 text-gray-700" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-7 w-7 shadow-sm backdrop-blur-sm rounded-full border ${
+                  wishlist.includes(product.id)
+                    ? "bg-black hover:bg-gray-800 border-black"
+                    : "bg-white/90 hover:bg-white border-gray-200"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleWishlist(product.id);
+                }}
+              >
+                <Heart 
+                  className={`h-3.5 w-3.5 ${
+                    wishlist.includes(product.id) 
+                      ? "text-white fill-current" 
+                      : "text-gray-700"
+                  }`} 
+                />
+              </Button>
+            </div>
           </div>
           
           <div className="space-y-2">
@@ -49,38 +83,6 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onA
                 <span className="text-xs text-gray-500">{product.rating}</span>
               </div>
             )}
-            
-            {/* Action Buttons */}
-            <div className="flex gap-2 mt-3">
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={!product.inStock}
-                className="flex-1 h-8 text-xs"
-                onClick={(e) => handleAddToCart(e, product)}
-              >
-                <ShoppingBag className="h-3 w-3 mr-1" />
-                Cart
-              </Button>
-              <Button
-                variant={wishlist.includes(product.id) ? "default" : "outline"}
-                size="sm"
-                className={`flex-1 h-8 text-xs ${
-                  wishlist.includes(product.id)
-                    ? "bg-black text-white hover:bg-gray-800"
-                    : ""
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleWishlist(product.id);
-                }}
-              >
-                <Heart 
-                  className={`h-3 w-3 mr-1 ${wishlist.includes(product.id) ? "fill-current" : ""}`} 
-                />
-                Wishlist
-              </Button>
-            </div>
           </div>
         </div>
       ))}
