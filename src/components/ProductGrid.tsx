@@ -1,5 +1,5 @@
 
-import { Heart } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/Product";
 
@@ -8,9 +8,15 @@ interface ProductGridProps {
   wishlist: number[];
   onProductClick: (product: Product) => void;
   onToggleWishlist: (productId: number) => void;
+  onAddToCart: (product: Product, size: string) => void;
 }
 
-const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist }: ProductGridProps) => {
+const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onAddToCart }: ProductGridProps) => {
+  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    onAddToCart(product, product.sizes ? product.sizes[0] : "Default");
+  };
+
   return (
     <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
       {products.map((product) => (
@@ -25,23 +31,6 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist }: P
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <Button
-              variant="ghost"
-              size="icon"
-              className={`absolute top-2 right-2 h-6 w-6 rounded-full transition-all ${
-                wishlist.includes(product.id)
-                  ? "bg-black text-white hover:bg-gray-800"
-                  : "bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100"
-              }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleWishlist(product.id);
-              }}
-            >
-              <Heart 
-                className={`h-3 w-3 ${wishlist.includes(product.id) ? "fill-current" : ""}`} 
-              />
-            </Button>
             {!product.inStock && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                 <span className="text-white text-xs font-medium">Out of Stock</span>
@@ -60,6 +49,38 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist }: P
                 <span className="text-xs text-gray-500">{product.rating}</span>
               </div>
             )}
+            
+            {/* Action Buttons */}
+            <div className="flex gap-2 mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!product.inStock}
+                className="flex-1 h-8 text-xs"
+                onClick={(e) => handleAddToCart(e, product)}
+              >
+                <ShoppingBag className="h-3 w-3 mr-1" />
+                Cart
+              </Button>
+              <Button
+                variant={wishlist.includes(product.id) ? "default" : "outline"}
+                size="sm"
+                className={`flex-1 h-8 text-xs ${
+                  wishlist.includes(product.id)
+                    ? "bg-black text-white hover:bg-gray-800"
+                    : ""
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleWishlist(product.id);
+                }}
+              >
+                <Heart 
+                  className={`h-3 w-3 mr-1 ${wishlist.includes(product.id) ? "fill-current" : ""}`} 
+                />
+                Wishlist
+              </Button>
+            </div>
           </div>
         </div>
       ))}

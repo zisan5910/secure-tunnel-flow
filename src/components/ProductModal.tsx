@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { X, Heart, ShoppingBag, Share2, Ruler, Star } from "lucide-react";
+import { X, Heart, ShoppingBag, Ruler, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/Product";
 
@@ -43,14 +42,9 @@ const ProductModal = ({ product, isInWishlist, onClose, onAddToCart, onToggleWis
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-50">
           <h3 className="font-light tracking-wide">printpoka</h3>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <Share2 className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         {/* Content */}

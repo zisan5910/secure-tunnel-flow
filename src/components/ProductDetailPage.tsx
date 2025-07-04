@@ -1,6 +1,5 @@
-
 import { useState, useMemo } from "react";
-import { ArrowLeft, Heart, ShoppingBag, Share2, Star } from "lucide-react";
+import { ArrowLeft, Heart, ShoppingBag, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/Product";
 import ProductGrid from "@/components/ProductGrid";
@@ -73,9 +72,7 @@ const ProductDetailPage = ({
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h3 className="font-light tracking-wide">Product Details</h3>
-          <Button variant="ghost" size="icon">
-            <Share2 className="h-4 w-4" />
-          </Button>
+          <div className="w-10"></div>
         </div>
       </div>
 
@@ -174,6 +171,7 @@ const ProductDetailPage = ({
             wishlist={wishlist}
             onProductClick={onProductClick}
             onToggleWishlist={onToggleWishlist}
+            onAddToCart={onAddToCart}
           />
         </div>
       )}
