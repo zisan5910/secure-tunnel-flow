@@ -56,30 +56,12 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onA
               </div>
             )}
             
-            {/* Action Icons - Positioned over the image */}
-            <div className="absolute bottom-2 right-2 flex gap-1">
+            {/* Wishlist Icon - Positioned over the image */}
+            <div className="absolute top-2 right-2">
               <Button
                 variant="ghost"
                 size="icon"
-                disabled={!product.inStock}
-                className="h-6 w-6 bg-white/90 hover:bg-white shadow-sm backdrop-blur-sm rounded-full border border-gray-200"
-                onClick={(e) => handleBuyNow(e, product)}
-              >
-                <Zap className="h-3 w-3 text-orange-600" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!product.inStock}
-                className="h-6 w-6 bg-white/90 hover:bg-white shadow-sm backdrop-blur-sm rounded-full border border-gray-200"
-                onClick={(e) => handleAddToCart(e, product)}
-              >
-                <ShoppingBag className="h-3 w-3 text-gray-700" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`h-6 w-6 shadow-sm backdrop-blur-sm rounded-full border ${
+                className={`h-7 w-7 shadow-sm backdrop-blur-sm rounded-full border ${
                   wishlist.includes(product.id)
                     ? "bg-black hover:bg-gray-800 border-black"
                     : "bg-white/90 hover:bg-white border-gray-200"
@@ -90,7 +72,7 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onA
                 }}
               >
                 <Heart 
-                  className={`h-3 w-3 ${
+                  className={`h-3.5 w-3.5 ${
                     wishlist.includes(product.id) 
                       ? "text-white fill-current" 
                       : "text-gray-700"
@@ -106,11 +88,33 @@ const ProductGrid = ({ products, wishlist, onProductClick, onToggleWishlist, onA
             </h4>
             <p className="font-medium text-sm text-black">৳{product.price}</p>
             {product.rating && (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 mb-2">
                 <span className="text-yellow-400 text-xs">★</span>
                 <span className="text-xs text-gray-500">{product.rating}</span>
               </div>
             )}
+            
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!product.inStock}
+                className="flex-1 h-8 text-xs border-gray-300 hover:bg-gray-50"
+                onClick={(e) => handleAddToCart(e, product)}
+              >
+                <ShoppingBag className="h-3 w-3 mr-1" />
+                Cart
+              </Button>
+              <Button
+                size="sm"
+                disabled={!product.inStock}
+                className="flex-1 h-8 text-xs bg-black text-white hover:bg-gray-800"
+                onClick={(e) => handleBuyNow(e, product)}
+              >
+                Buy Now
+              </Button>
+            </div>
           </div>
         </div>
       ))}

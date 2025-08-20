@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { Heart, Filter, X, ShoppingCart, Code } from "lucide-react";
+import { Heart, Filter, X, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProductGrid from "@/components/ProductGrid";
@@ -11,8 +11,32 @@ import Contact from "@/pages/Contact";
 import Search from "@/pages/Search";
 import CategoryDropdown from "@/components/CategoryDropdown";
 import { Product } from "@/types/Product";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import PWAInstallPopup from "@/components/PWAInstallPopup";
+
+// Custom hook for localStorage
+function useLocalStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return [storedValue, setValue] as const;
+}
 
 const mockProducts: Product[] = [
   // Electronics - Mobile Phones
@@ -1066,14 +1090,6 @@ const Index = () => {
               )}
             </Button>
             
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="hover:bg-gray-50 h-8 w-8"
-              onClick={() => window.open("https://ridoan-zisan.netlify.app", "_blank")}
-            >
-              <Code className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </header>
