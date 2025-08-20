@@ -1101,10 +1101,10 @@ const Index = () => {
             <Button
               variant="ghost"
               onClick={() => handleCategorySelect("All")}
-              className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 flex-shrink-0 ${
+              className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 rounded-full border flex-shrink-0 ${
                 selectedCategory === "All"
-                  ? "bg-black text-white hover:bg-gray-800 shadow-md"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-black"
+                  ? "bg-foreground text-background border-foreground shadow-md hover:bg-foreground/90"
+                  : "bg-background text-foreground border-border hover:border-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
               All Products
@@ -1115,10 +1115,10 @@ const Index = () => {
                 key={category}
                 variant="ghost"
                 onClick={() => handleCategorySelect(category)}
-                className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:scale-105 flex-shrink-0 ${
+                className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 rounded-full border flex-shrink-0 ${
                   selectedCategory === category
-                    ? "bg-black text-white hover:bg-gray-800 shadow-md"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-black"
+                    ? "bg-foreground text-background border-foreground shadow-md hover:bg-foreground/90"
+                    : "bg-background text-foreground border-border hover:border-foreground hover:bg-accent hover:text-accent-foreground"
                 }`}
               >
                 {category}
